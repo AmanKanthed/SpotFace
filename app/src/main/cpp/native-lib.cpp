@@ -1,7 +1,7 @@
 #include <jni.h>
 #include <stdio.h>
 #include <iostream>
-#include <opencv2/imgproc.hpp>
+#include "opencv2/imgproc.hpp"
 #include "opencv2/opencv.hpp"
 #include <android/log.h>
 
