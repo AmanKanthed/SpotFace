@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity implements CameraBridgeViewB
         if (OpenCVLoader.initDebug()){
             Log.i(TAG, "OpenCV loaded successfully");
         }else{
-            Log.i(TAG, "OpenCV loaded faield");
+            Log.i(TAG, "OpenCV failed to load");
         }
     }
 
@@ -39,7 +39,6 @@ public class MainActivity extends AppCompatActivity implements CameraBridgeViewB
                     // Load ndk built module, as specified in moduleName in build.gradle
                     // after opencv initialization
                     System.loadLibrary("native-lib");
-                    System.loadLibrary("opencv_java3");
                     _cameraBridgeViewBase.enableView();
                 }
                 break;
@@ -58,6 +57,14 @@ public class MainActivity extends AppCompatActivity implements CameraBridgeViewB
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        if (!OpenCVLoader.initDebug()) {
+            Log.d(TAG, "Internal OpenCV library not found. Using OpenCV Manager for initialization");
+            OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_3_0_0, this, _baseLoaderCallback);
+        } else {
+            Log.d(TAG, "OpenCV library found inside package. Using it!");
+        }
+
+
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         setContentView(R.layout.activity_main);
 
@@ -69,6 +76,7 @@ public class MainActivity extends AppCompatActivity implements CameraBridgeViewB
         _cameraBridgeViewBase = (CameraBridgeViewBase) findViewById(R.id.main_surface);
         _cameraBridgeViewBase.setVisibility(SurfaceView.VISIBLE);
         _cameraBridgeViewBase.setCvCameraViewListener(this);
+        _baseLoaderCallback.onManagerConnected(LoaderCallbackInterface.SUCCESS);
     }
 
     @Override
@@ -135,5 +143,5 @@ public class MainActivity extends AppCompatActivity implements CameraBridgeViewB
     }
 
     public native void salt(long matAddrGray, int nbrElem);
-     public native void faceDetection(long addrRgba);
+    public native void faceDetection(long addrRgba);
 }

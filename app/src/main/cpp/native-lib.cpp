@@ -27,13 +27,11 @@ void JNICALL Java_com_example_amankathed_spotface_MainActivity_salt(JNIEnv *env,
 
 void JNICALL Java_com_example_amankathed_spotface_MainActivity_faceDetection(JNIEnv *env, jobject  instance, jlong addrRgba){
 
-    __android_log_print(ANDROID_LOG_ERROR, "TRACKERS", "%s", "fun2");
+    __android_log_print(ANDROID_LOG_INFO, "TRACKERS", "%s", "begin face detection");
 
     Mat& frame = *(Mat*)addrRgba;
 
-    //detect(frame);
-//    detect(frame){
-    //String face_cascade_name = "/storage/emulator/0/opencv/haarcascade_frontalface_alt.xml";
+    // TODO: package these with the app
     String face_cascade_name = "/storage/emulated/0/opencv/haarcascade_frontalface_alt.xml";
     String eyes_cascade_name = "/storage/emulated/0/opencv/haarcascade_eye_tree_eyeglasses.xml";
     CascadeClassifier face_cascade;
